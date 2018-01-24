@@ -21,4 +21,6 @@
 	define('HP_CALLSIGNDB_DBNAME',				'ha5kdr.hu');
 	define('HP_CALLSIGNDB_PASS',				'');
 	define('HP_CALLSIGNDB_TABLE',				'nmhh-csb');
+
+	define('HP_SMTP_HOST',						'localhost');
 ?>

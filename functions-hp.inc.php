@@ -1,4 +1,8 @@
 <?php
+	include('PHPMailer/src/PHPMailer.php');
+	include('PHPMailer/src/SMTP.php');
+	use PHPMailer\PHPMailer\PHPMailer;
+
 	function hp_sanitize($s) {
 		return strip_tags(stripslashes(trim($s)));
 	}
@@ -33,13 +37,16 @@
 	}
 
     function hp_sendmail($to, $subject, $msg, $headers = '') {
-		$header = "From: hamnetradio.hu <info@hamnetradio.hu>\nReply-To: info@hamnetradio.hu\nMIME-Version: 1.0";
-		if (strstr($headers, 'Content-type:') == false)
-			$header .= "\nContent-type: text/plain; charset=UTF-8";
-		if ($headers)
-			$header .= "\n$headers";
+    	$mail = new PHPMailer();
 
-		mail($to, '=?UTF-8?B?' . base64_encode("[hamnetradio.hu portál] $subject") .'?=', $msg, $header);
+    	$mail->isSMTP();
+    	$mail->Host = HP_SMTP_HOST;
+    	$mail->setFrom('info@hamnetradio.hu', 'hamnetradio.hu');
+    	$mail->addReplyTo('info@hamnetradio.hu');
+    	$mail->addAddress($to);
+    	$mail->Subject = '=?UTF-8?B?' . base64_encode("[hamnetradio.hu portál] $subject") .'?=';
+    	$mail->Body = $msg;
+		$mail->send();
 	}
 
 	function hp_get_licencephotofn($callsign) {
